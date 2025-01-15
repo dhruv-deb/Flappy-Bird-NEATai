@@ -12,6 +12,7 @@ An AI-powered version of Flappy Bird that learns to play through neuroevolution 
 - Install pip
 - ## Run the command in directory terminal
    pip install pygame neat-python
+- Run flappy_bird.py
 
 # NEAT Algorithm
 
