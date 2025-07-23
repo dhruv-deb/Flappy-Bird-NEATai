@@ -3,6 +3,7 @@ import neat
 import time
 import os
 import random
+import sys
 pygame.font.init()
 
 WIN_WIDTH=550
@@ -10,10 +11,20 @@ WIN_HEIGHT=800
 
 GEN=0
 
-BIRD_IMGS=[pygame.transform.scale2x(pygame.image.load(os.path.join("imgs","bird1.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs","bird2.png"))),pygame.transform.scale2x(pygame.image.load(os.path.join("imgs","bird3.png")))]
-PIPE_IMGS=pygame.transform.scale2x(pygame.image.load(os.path.join("imgs","pipe.png")))
-BASE_IMGS=pygame.transform.scale2x(pygame.image.load(os.path.join("imgs","base.png")))
-BG_IMGS=pygame.transform.scale2x(pygame.image.load(os.path.join("imgs","bg.png")))
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+BIRD_IMGS=[pygame.transform.scale2x(pygame.image.load(resource_path("imgs/bird1.png"))), pygame.transform.scale2x(pygame.image.load(resource_path("imgs/bird2.png"))), pygame.transform.scale2x(pygame.image.load(resource_path("imgs/bird3.png")))]
+PIPE_IMGS=pygame.transform.scale2x(pygame.image.load(resource_path("imgs/pipe.png")))
+BASE_IMGS=pygame.transform.scale2x(pygame.image.load(resource_path("imgs/base.png")))
+BG_IMGS=pygame.transform.scale2x(pygame.image.load(resource_path("imgs/bg.png")))
 
 STAT_FONT=pygame.font.SysFont("comicsans",50)
 class Bird:
@@ -182,7 +193,6 @@ def main(genomes,config):
 
     base=Base(730)
     pipes=[Pipe(400)]
-    # collision=False
     win=pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
 
     clock=pygame.time.Clock()
@@ -194,20 +204,13 @@ def main(genomes,config):
             if event.type==pygame.QUIT:
                 run=False
                 pygame.quit()
-                quit()
+                sys.exit()
                 break
 
         pipe_idx=0
         if len(birds)>0:
             if(len(pipes)>1 and birds[0].x>pipes[0].x + pipes[0].PIPE_TOP.get_width()):
                 pipe_idx=1
-        # else:
-        #     run=False
-        #     break
-        #     if event.type == pygame.KEYDOWN:       #move the bird on key press
-        #         if event.key == pygame.K_SPACE:
-        #             bird.jump()
-        # bird.move()
 
         for x,bird in enumerate(birds):
             
@@ -237,19 +240,14 @@ def main(genomes,config):
             if pipe.x+pipe.PIPE_TOP.get_width()<0:
                 rem.append(pipe) 
 
-            
-
-
         if add_pipe:
             score+=1
             for g in ge:
                 g.fitness +=5
             pipes.append(Pipe(700))
         
-        
         base.move()
             
-    
         for r in rem:
             pipes.remove(r)
 
@@ -263,7 +261,6 @@ def main(genomes,config):
         draw_window(win,birds,pipes,base,score,GEN)
     
 
-
 def run(config_path):
     config=neat.config.Config(neat.DefaultGenome,neat.DefaultReproduction,neat.DefaultSpeciesSet,neat.DefaultStagnation,config_path)
     p=neat.Population(config)
@@ -275,10 +272,5 @@ def run(config_path):
     winner=p.run(main,50)
 
 if __name__ == "__main__":
-    local_dir=os.path.dirname(__file__)
-    config_path=os.path.join(local_dir,"config-feedforward.txt")
+    config_path = resource_path("config-feedforward.txt")
     run(config_path)
-
-
-        
-

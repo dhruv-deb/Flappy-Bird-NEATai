@@ -1,0 +1,56 @@
+# PyInstaller files
+# -------------------------------------------------------------------
+/build/
+/dist/
+*.spec
+flappy_bird.exe
+flappy_bird.zip
+
+
+# Python
+# -------------------------------------------------------------------
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python Virtualenv (assuming standard names like "venv")
+venv/
+env/
+.venv/
+.env/
+
+# Distribution / packaging
+.Python
+develop-eggs/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+
+# IDEs & Editors
+# -------------------------------------------------------------------
+# VS Code
+.vscode/
+# PyCharm
+.idea/
+
+
+# Operating System
+# -------------------------------------------------------------------
+# macOS
+.DS_Store
+# Windows
+Thumbs.db
+
+#NEAT
+NEAT.pdf
